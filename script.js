@@ -45,7 +45,11 @@ const els = {
     newSectionInput: document.getElementById('new-section-name'),
     newSectionSubject: document.getElementById('new-section-subject'),
     confirmAddStudent: document.getElementById('confirm-add-student'),
-    confirmAddSection: document.getElementById('confirm-add-section')
+    confirmAddSection: document.getElementById('confirm-add-section'),
+    // Mobile Navigation
+    mobileMenuToggle: document.getElementById('mobile-menu-toggle'),
+    mobileOverlay: document.getElementById('mobile-overlay'),
+    sidebar: document.querySelector('.sidebar')
 };
 
 // --- Initialization ---
@@ -53,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     updateDateDisplay();
     render();
+
+    // Mobile Menu Functionality
+    initMobileMenu();
 
     // Dropdown Click Outside
     document.addEventListener('click', (e) => {
@@ -63,6 +70,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// --- Mobile Menu Functions ---
+function initMobileMenu() {
+    // Toggle sidebar on mobile menu button click
+    els.mobileMenuToggle.addEventListener('click', () => {
+        toggleMobileSidebar();
+    });
+
+    // Close sidebar when clicking overlay
+    els.mobileOverlay.addEventListener('click', () => {
+        closeMobileSidebar();
+    });
+
+    // Close sidebar on window resize if screen becomes large
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+            closeMobileSidebar();
+        }
+    });
+}
+
+function toggleMobileSidebar() {
+    els.sidebar.classList.toggle('active');
+    els.mobileOverlay.classList.toggle('active');
+}
+
+function closeMobileSidebar() {
+    els.sidebar.classList.remove('active');
+    els.mobileOverlay.classList.remove('active');
+}
+
 
 function updateDateDisplay() {
     const dateOpts = { weekday: 'long', month: 'short', day: 'numeric' };
@@ -368,8 +406,10 @@ window.switchSection = (id) => {
     els.dataDropdown.classList.add('hidden');
     saveData();
     render();
-    if (window.innerWidth < 768) { // Auto close sidebar on mobile
-        document.body.classList.add('sidebar-closed');
+
+    // Auto close sidebar on mobile/tablet
+    if (window.innerWidth < 1024) {
+        closeMobileSidebar();
     }
 };
 
