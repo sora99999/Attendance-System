@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System</title>
+    <!-- Google Fonts: Outfit for a modern, premium look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-background"></div>
+
+    <div class="main-layout">
+        <!-- Sidebar / Section Nav -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="logo.png" alt="Logo" class="app-logo">
+                <h2>Edu<span class="highlight">Track</span></h2>
+            </div>
+
+            <div class="sections-header">
+                <h3>Classes</h3>
+            </div>
+
+            <ul id="sections-list" class="sections-list">
+                <!-- Sections Injected Here -->
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view-container">
+                <div class="dash-header">
+                    <div>
+                        <h1>My Classes</h1>
+                        <p class="subtitle">Manage your sections and track attendance</p>
+                    </div>
+                    <button id="dash-add-section-btn" class="primary-btn">
+                        <i class="fa-solid fa-plus"></i> New Class
+                    </button>
+                </div>
+
+                <div id="sections-grid" class="sections-grid">
+                    <!-- Section Cards Injected Here -->
+                </div>
+
+                <div id="dashboard-empty" class="empty-state-large hidden">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <h2>No Classes Yet</h2>
+                    <p>Create your first class to start tracking attendance</p>
+                    <button class="primary-btn" onclick="document.getElementById('dash-add-section-btn').click()">
+                        <i class="fa-solid fa-plus"></i> Create Class
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section View -->
+            <div id="section-view" class="view-container hidden">
+                <!-- History Mode Banner -->
+                <div id="history-banner" class="history-banner hidden">
+                    <div>
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span id="history-date-display">Dec 4, 2024</span>
+                    </div>
+                    <button id="exit-history-btn" class="sm-btn">Return to Today</button>
+                </div>
+
+                <!-- Top Bar -->
+                <header class="top-bar">
+                    <div class="current-section-info">
+                        <div class="header-left">
+                            <button id="back-to-dash-btn" class="icon-btn-large" title="Back to Dashboard">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h2 id="current-section-title">Section Name</h2>
+                                <div style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span id="current-section-subject" class="subject-badge">Subject</span>
+                                    <div class="separator"></div>
+                                    <span class="date-badge" id="current-date">Today</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-controls">
+                        <button id="section-menu-btn" class="control-btn" title="History & Data">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <button id="lock-btn" class="control-btn" title="Lock & Save">
+                            <i class="fa-solid fa-unlock"></i>
+                            <span id="lock-text">Unlocked</span>
+                        </button>
+                        <button id="open-add-student-btn" class="primary-btn">
+                            <i class="fa-solid fa-user-plus"></i> Add Student
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="data-dropdown" class="dropdown-menu hidden">
+                            <div class="dropdown-header">
+                                <h4>History & Data</h4>
+                            </div>
+                            <div class="dropdown-body">
+                                <div id="history-log" class="history-log-container small-scroll">
+                                    <!-- History Items -->
+                                </div>
+                                <div class="dropdown-actions">
+                                    <button class="primary-btn full-width" id="export-excel-btn">
+                                        <i class="fa-solid fa-file-excel"></i> Export Report
+                                    </button>
+                                    <button class="danger-btn full-width" id="delete-section-full-btn">
+                                        <i class="fa-solid fa-trash"></i> Delete Class
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="stats-bar">
+                    <div class="stat-pill total">
+                        <span class="label">Total</span>
+                        <span class="value" id="total-count">0</span>
+                    </div>
+                    <div class="stat-pill present">
+                        <span class="label">Present</span>
+                        <span class="value" id="present-count">0</span>
+                    </div>
+                    <div class="stat-pill absent">
+                        <span class="label">Absent</span>
+                        <span class="value" id="absent-count">0</span>
+                    </div>
+                </div>
+
+                <div class="list-container">
+                    <div class="list-header-row">
+                        <span class="col-name">Student Name (A-Z)</span>
+                        <span class="col-status">Status</span>
+                        <span class="col-actions">Actions</span>
+                    </div>
+                    <ul id="student-list" class="student-list">
+                        <!-- Students Injected Here -->
+                    </ul>
+                    <div id="empty-state" class="empty-state hidden">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                        <p>No students in this section.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="modal hidden">
+        <div class="modal-header">
+            <h3>Add New Student</h3>
+            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="input-field">
+                <label for="new-student-name">Student Name</label>
+                <input type="text" id="new-student-name" placeholder="Enter student name" autocomplete="off">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel close-modal">Cancel</button>
+            <button id="confirm-add-student" class="btn-confirm">Add</button>
+        </div>
+    </div>
+
+    <!-- Add Class Modal -->
+    <div id="add-section-modal" class="modal hidden">
+        <div class="modal-header">
+            <h3>Create New Class</h3>
+            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="input-field">
+                <label for="new-section-name">Class Name</label>
+                <input type="text" id="new-section-name" placeholder="e.g. Grade 10 - A" autocomplete="off">
+            </div>
+            <div class="input-field" style="margin-top: 1rem;">
+                <label for="new-section-subject">Subject</label>
+                <input type="text" id="new-section-subject" placeholder="e.g. Mathematics" autocomplete="off">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel close-modal">Cancel</button>
+            <button id="confirm-add-section" class="btn-confirm">Create</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
