@@ -958,7 +958,7 @@ body {
     display: none;
     position: fixed;
     top: 1rem;
-    left: 1rem;
+    right: 1rem;
     z-index: 10001;
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -999,6 +999,7 @@ body {
    TABLET & BELOW (MAX-WIDTH: 1023px)
    ======================================== */
 @media screen and (max-width: 1023px) {
+
     /* Show mobile menu toggle */
     .mobile-menu-toggle {
         display: flex;
@@ -1069,6 +1070,7 @@ body {
    MOBILE ONLY (MAX-WIDTH: 767px)
    ======================================== */
 @media screen and (max-width: 767px) {
+
     /* Body adjustments */
     body {
         font-size: 14px;
@@ -1293,6 +1295,7 @@ body {
    SMALL MOBILE (MAX-WIDTH: 480px)
    ======================================== */
 @media screen and (max-width: 480px) {
+
     /* Further reduce padding */
     .content-area {
         padding: 0.75rem;
@@ -1328,6 +1331,7 @@ body {
    LANDSCAPE MOBILE (MAX-HEIGHT: 500px)
    ======================================== */
 @media screen and (max-height: 500px) and (orientation: landscape) {
+
     /* Reduce vertical padding in landscape */
     .content-area {
         padding: 0.5rem 1rem;
@@ -1351,6 +1355,7 @@ body {
    PRINT STYLES
    ======================================== */
 @media print {
+
     .sidebar,
     .mobile-menu-toggle,
     .header-controls,
